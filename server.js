@@ -32,14 +32,14 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res)
 
 // Now add express.json() for other routes
 app.use(express.json());
-
 const PACKAGES = {
   blue: { name: 'Blue Icons', price: 0, priceId: null },
+  purple: { name: 'Purple Icons', price: 0, priceId: null },
   red: { name: 'Red Icons', price: 49, priceId: 'price_red' },
-  green: { name: 'Green Icons', price: 149, priceId: 'price_green' },
-  yellow: { name: 'Yellow Icons', price: 249, priceId: 'price_yellow' },
-  purple: { name: 'Purple Icons', price: 349, priceId: 'price_purple' },
-  orange: { name: 'Orange Icons', price: 449, priceId: 'price_orange' }
+  yellow: { name: 'Yellow Icons', price: 49, priceId: 'price_yellow' },
+  green: { name: 'Green Icons', price: 49, priceId: 'price_green' },
+  orange: { name: 'Orange Icons', price: 49, priceId: 'price_orange' },
+  bundle: { name: 'Bundle Package', price: 189, priceId: 'price_bundle' }
 };
 
 app.post('/create-checkout-session', async (req, res) => {
