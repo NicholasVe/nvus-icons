@@ -33,6 +33,38 @@ app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res)
 // Now add express.json() for other routes
 app.use(express.json());
 
+// Rest of your code...
+
+app.use(express.static('public'));
+
+// Webhook route MUST come before express.json()
+app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
+  } catch (err) {
+    console.error('Webhook signature verification failed:', err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+    console.log('Payment succeeded:', session.id);
+    // TODO: Send download link email here
+  }
+
+  res.json({ received: true });
+});
+
+// Now add express.json() for other routes
+app.use(express.json());
+
 // Rest of your code...require('dotenv').config();
 const express = require('express');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
